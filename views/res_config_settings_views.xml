@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Server action to call current user's dashboard preferences -->
+    <record id="server_action_open_dashboard_preferences" model="ir.actions.server">
+        <field name="name">My Dashboard Preferences</field>
+        <field name="model_id" ref="base.model_res_users"/>
+        <field name="state">code</field>
+        <field name="code">
+# Open the current logged-in user's dashboard preferences
+action = model.browse(env.uid).open_dashboard_preferences()
+        </field>
+    </record>
+
+    <!-- Extend the general settings form -->
+    <record id="res_config_settings_view_form_dashboard" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.dashboard</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='company_id']" position="after">
+                <div class="app_settings_block" data-string="Manufacturing &amp; Inventory Dashboard"
+                     string="Dashboard Settings" data-key="manufacturing_inventory_dashboard">
+                    <h2>Manufacturing &amp; Inventory Dashboard</h2>
+                    <div class="row mt16 o_settings_container">
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_right_pane">
+
+                                <div class="text-muted mb8">
+                                    Configure global settings for the Manufacturing and Inventory Dashboard.
+                                </div>
+
+                                <div class="content-group mt16">
+                                    <button name="%(manufacturing_inventory_dashboard.action_dashboard_kpi)d"
+                                            type="action"
+                                            icon="fa-cog"
+                                            string="Configure KPIs"
+                                            class="oe_link"/>
+                                    <button name="%(manufacturing_inventory_dashboard.action_dashboard_chart)d"
+                                            type="action"
+                                            icon="fa-cog"
+                                            string="Configure Charts"
+                                            class="oe_link"/>
+                                    <!-- Button for current user dashboard preferences -->
+                                    <button name="%(manufacturing_inventory_dashboard.server_action_open_dashboard_preferences)d"
+                                            type="action"
+                                            string="My Dashboard Preferences"
+                                            class="oe_link mt8"/>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

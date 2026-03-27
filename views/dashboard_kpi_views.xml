@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="dashboard_kpi_view_form" model="ir.ui.view">
+        <field name="name">dashboard.kpi.form</field>
+        <field name="model">dashboard.kpi</field>
+        <field name="arch" type="xml">
+            <form string="Dashboard KPI">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="technical_name"/>
+                            <field name="model_id" options="{'no_create': True, 'no_open': True}"/>
+                            <field name="calculation_method"/>
+                        </group>
+                        <group>
+                            <field name="icon"/>
+                            <field name="color"/>
+                            <field name="field_to_aggregate" invisible="calculation_method != 'sum_field' and calculation_method != 'avg_field'"/>
+                            <field name="kpi_custom_method_name" invisible="calculation_method != 'custom'"name=\"kpi_custom_method_name\"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Filter Configuration">
+                            <group>
+                                <group string="Standard Filter">
+                                    <field name="filter_field_id" options="{'no_create': True, 'no_open': True}"/>
+                                    <field name="filter_operator" invisible="not filter_field_id"/>
+                                    <field name="filter_value" invisible="not filter_field_id"/>
+                                </group>
+                                <group string="Advanced Filter">
+                                    <field name="domain_json_id" string="Saved Filter Domain" options="{'no_create': True, 'no_open': True}"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Drill-down">
+                            <group>
+                                <field name="drill_down_action_id" options="{'no_create': True, 'no_open': True}"/>
+                                <field name="drill_down_domain_id" string="Drill-down Filter" options="{'no_create': True, 'no_open': True}"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

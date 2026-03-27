@@ -1,0 +1,46 @@
+<templates id="recent_orders_template" xml:space="preserve">
+    <t t-name="manufacturing_inventory_dashboard.recent_orders_template" owl="1">
+        <div class="o_dashboard_table_container">
+            <h3>Recent Manufacturing Orders</h3>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Reference</th>
+                            <th>Product</th>
+                            <th>Quantity</th>
+                            <th>Status</th>
+                            <th>Planned Start Date</th>
+                            <th>Routing</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-if="props.mrpOrders.length > 0">
+                            <t t-foreach="props.mrpOrders" t-as="order" t-key="order.id">
+                                <tr t-on-click="() => props.onRowClick('mrp.production', order.id, order.action_id)" class="table-row-link">
+                                    <td><t t-esc="order.name"/></td>
+                                    <td><t t-esc="order.product"/></td>
+                                    <td><t t-esc="order.quantity"/></td>
+                                    <td>
+                                        <span t-att-class="'badge badge-' +
+                                            (order.state_raw === 'done' ? 'success' :
+                                            order.state_raw === 'progress' ? 'primary' :
+                                            order.state_raw === 'confirmed' ? 'info' :
+                                            order.state_raw === 'cancel' ? 'danger' :
+                                            'secondary')"
+                                            t-esc="order.state"/>
+                                    </td>
+                                    <td><t t-esc="order.date_planned_start"/></td>
+                                    <td><t t-esc="order.route_id || 'N/A'"/></td>
+                                </tr>
+                            </t>
+                        </t>
+                        <tr t-else="">
+                            <td colspan="6" class="text-center">No recent manufacturing orders found.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </t>
+</templates>

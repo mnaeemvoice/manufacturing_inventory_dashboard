@@ -1,0 +1,21 @@
+<!DOCTYPE odoo SYSTEM "odoo.dtd">
+<templates id="chart_template" xml:space="preserve">
+    <t t-name="manufacturing_inventory_dashboard.chart_template" owl="1">
+        <div class="o_chart_container">
+            <div class="chart-header">
+                <!-- Safe check for chartData -->
+
+                <button class="chart-export-btn" t-on-click="onExportClick" title="Export to CSV">
+                    <i class="fa fa-file-csv"/>
+                </button>
+            </div>
+            <div class="chart-canvas-wrapper">
+                <!-- Safe ref for chart canvas -->
+                <canvas t-ref="chartCanvas"></canvas>
+                <t t-if="!chartData">
+                    <p class="text-muted">Chart data not available.</p>
+                </t>
+            </div>
+        </div>
+    </t>
+</templates>

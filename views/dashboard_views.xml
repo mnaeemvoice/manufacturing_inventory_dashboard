@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE odoo SYSTEM "odoo.dtd">
+<odoo>
+    <data>
+<record id="action_manufacturing_inventory_dashboard" model="ir.actions.client">
+    <field name="name">Manufacturing Dashboard</field>
+    <field name="tag">manufacturing_inventory_dashboard.dashboard_action</field>
+</record>
+        <!-- KPI Configuration Window Action -->
+        <record id="action_dashboard_kpi" model="ir.actions.act_window">
+            <field name="name">Dashboard KPIs</field>
+            <field name="res_model">dashboard.kpi</field>
+            <field name="view_mode">list,form</field>
+        </record>
+
+        <!-- Chart Configuration Window Action -->
+        <record id="action_dashboard_chart" model="ir.actions.act_window">
+            <field name="name">Dashboard Charts</field>
+            <field name="res_model">dashboard.chart</field>
+            <field name="view_mode">list,form</field>
+        </record>
+
+        <!-- Main menu item for the dashboard -->
+        <menuitem id="menu_manufacturing_inventory_dashboard_root"
+                  name="M&amp;I Dashboard"
+                  sequence="10"
+                  web_icon="manufacturing_inventory_dashboard,static/description/icon.png"/>
+
+        <menuitem id="menu_manufacturing_inventory_dashboard"
+          name="Dashboard Overview"
+          parent="menu_manufacturing_inventory_dashboard_root"
+          action="action_manufacturing_inventory_dashboard"
+          sequence="10"/>
+        <!-- Placeholder menu for configuration, will be populated later -->
+        <menuitem id="menu_manufacturing_inventory_dashboard_configuration"
+                  name="Configuration"
+                  parent="menu_manufacturing_inventory_dashboard_root"
+                  sequence="99"/>
+
+        <menuitem id="menu_dashboard_kpis"
+                  name="Dashboard KPIs"
+                  parent="menu_manufacturing_inventory_dashboard_configuration"
+                  action="action_dashboard_kpi"
+                  sequence="10"/>
+
+        <menuitem id="menu_dashboard_charts"
+                  name="Dashboard Charts"
+                  parent="menu_manufacturing_inventory_dashboard_configuration"
+                  action="action_dashboard_chart"
+                  sequence="20"/>
+
+        <!-- Form view for configuring the dashboard -->
+        <record id="manufacturing_inventory_dashboard_view_form" model="ir.ui.view">
+            <field name="name">manufacturing.inventory.dashboard.form</field>
+            <field name="model">manufacturing.inventory.dashboard</field>
+            <field name="arch" type="xml">
+                <form string="Manufacturing &amp; Inventory Dashboard">
+                    <sheet>
+                        <h1><field name="name" readonly="1"/></h1>
+                        <group>
+                            <group>
+                                <field name="date_range" widget="radio"/>
+                                <field name="date_start" invisible="1"/>
+                                <field name="date_end" invisible="1"/>
+                            </group>
+                        </group>
+                        <!-- KPIs, Charts, and Tables will be rendered dynamically by JS in the client action -->
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="action_dashboard_stock_picking" model="ir.actions.act_window">
+    <field name="name">Stock Pickings</field>
+    <field name="res_model">stock.picking</field>
+    <field name="view_mode">tree,form</field>
+    <field name="view_id" ref="view_stock_picking_list"/>
+</record>
+        # example: stock.picking ke liye
+<record id="view_stock_picking_list" model="ir.ui.view">
+    <field name="name">stock.picking.list</field>
+    <field name="model">stock.picking</field>
+    <field name="arch" type="xml">
+        <list>
+            <field name="name"/>
+            <field name="partner_id"/>
+            <field name="scheduled_date"/>
+            <field name="state"/>
+        </list>
+    </field>
+</record>
+
+        <!-- KPI Configuration Views (list and Form) -->
+        <record id="view_dashboard_kpi_list" model="ir.ui.view">
+            <field name="name">dashboard.kpi.list</field>
+            <field name="model">dashboard.kpi</field>
+            <field name="arch" type="xml">
+                <list string="Dashboard KPIs">
+                    <field name="name"/>
+                    <field name="technical_name"/>
+                    <field name="model_id"/>
+                    <field name="calculation_method"/>
+                    <field name="field_to_aggregate"/>
+                    <field name="icon"/>
+                    <field name="color"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_dashboard_kpi_form" model="ir.ui.view">
+            <field name="name">dashboard.kpi.form</field>
+            <field name="model">dashboard.kpi</field>
+            <field name="arch" type="xml">
+                <form string="Dashboard KPI">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="technical_name"/>
+                                <field name="model_id"/>
+                                <field name="calculation_method"/>
+                            </group>
+                            <group>
+                                <field name="icon"/>
+                                <field name="color"/>
+                                <field name="drill_down_action_id"/>
+                                <field name="drill_down_domain_id"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Calculation Details">
+                                <group>
+                                    <field name="field_to_aggregate"/>
+                                    <field name="kpi_custom_method_name"/>
+                                <field name="domain_json_id" widget="many2one" options="{'no_open': True, 'no_create': True}"/>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Chart Configuration Views (list and Form) -->
+        <record id="view_dashboard_chart_list" model="ir.ui.view">
+            <field name="name">dashboard.chart.list</field>
+            <field name="model">dashboard.chart</field>
+            <field name="arch" type="xml">
+                <list string="Dashboard Charts">
+                    <field name="name"/>
+                    <field name="technical_name"/>
+                    <field name="chart_type"/>
+                    <field name="model_id"/>
+                    <field name="group_by_field"/>
+                    <field name="aggregate_method"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_dashboard_chart_form" model="ir.ui.view">
+            <field name="name">dashboard.chart.form</field>
+            <field name="model">dashboard.chart</field>
+            <field name="arch" type="xml">
+                <form string="Dashboard Chart">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="technical_name"/>
+                                <field name="chart_type"/>
+                                <field name="model_id"/>
+                            </group>
+                            <group>
+                                <field name="custom_chart_method"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Data Configuration">
+                                <group>
+                                    <field name="group_by_field"/>
+                                    <field name="aggregate_method"/>
+                                    <field name="field_to_aggregate"/>
+                               <field name="domain_json_id" widget="many2one" options="{'no_open': True, 'no_create': True}"/>
+                                </group>
+                            </page>
+                            <page string="Chart Options">
+                                <group>
+                                    <field name="chart_options" widget="json_editor"/>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+    </data>
+</odoo>

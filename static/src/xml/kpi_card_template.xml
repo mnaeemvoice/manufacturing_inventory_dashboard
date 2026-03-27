@@ -1,0 +1,30 @@
+<!DOCTYPE odoo SYSTEM "odoo.dtd">
+<templates id="kpi_card_template" xml:space="preserve">
+    <t t-name="manufacturing_inventory_dashboard.kpi_card_template" owl="1">
+
+        <!-- KPI Card -->
+        <div class="o_kpi_card" t-if="props.kpi" t-on-click="onClick" style="cursor: pointer;">
+
+            <!-- Header -->
+            <div class="kpi-header">
+                <span t-att-class="'kpi-icon ' + (props.kpi.color || '') + ' ' + (props.kpi.icon || '')"></span>
+                <span class="kpi-name" t-esc="props.kpi.name"></span>
+            </div>
+
+            <!-- KPI Value -->
+            <div class="kpi-value">
+                <t t-esc="props.kpi.value"/>
+            </div>
+
+            <!-- KPI Change -->
+            <t t-if="props.kpi.change !== undefined">
+                <div t-att-class="'kpi-change ' + (props.kpi.change >= 0 ? 'text-success' : 'text-danger')">
+                    <i t-att-class="'fa ' + (props.kpi.change >= 0 ? 'fa-arrow-up' : 'fa-arrow-down')"></i>
+                    <t t-esc="Math.abs(props.kpi.change).toFixed(2)"/> %
+                </div>
+            </t>
+
+        </div>
+
+    </t>
+</templates>

@@ -1,0 +1,44 @@
+<templates id="recent_transfers_template" xml:space="preserve">
+    <t t-name="manufacturing_inventory_dashboard.recent_transfers_template" owl="1">
+        <div class="o_dashboard_table_container mt-4">
+            <h3>Recent Stock Transfers</h3>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Reference</th>
+                            <th>Partner</th>
+                            <th>Type</th>
+                            <th>Status</th>
+                            <th>Scheduled Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-if="props.stockTransfers.length > 0">
+                            <t t-foreach="props.stockTransfers" t-as="transfer" t-key="transfer.id">
+                                <tr t-on-click="() => props.onRowClick('stock.picking', transfer.id, transfer.action_id)" class="table-row-link">
+                                    <td><t t-esc="transfer.name"/></td>
+                                    <td><t t-esc="transfer.partner || 'N/A'"/></td>
+                                    <td><t t-esc="transfer.type"/></td>
+                                    <td>
+                                        <span t-att-class="'badge badge-' +
+                                            (transfer.state_raw === 'done' ? 'success' :
+                                            transfer.state_raw === 'assigned' ? 'primary' :
+                                            transfer.state_raw === 'waiting' ? 'warning' :
+                                            transfer.state_raw === 'cancel' ? 'danger' :
+                                            'secondary')"
+                                            t-esc="transfer.state"/>
+                                    </td>
+                                    <td><t t-esc="transfer.scheduled_date"/></td>
+                                </tr>
+                            </t>
+                        </t>
+                        <tr t-else="">
+                            <td colspan="5" class="text-center">No recent stock transfers found.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </t>
+</templates>

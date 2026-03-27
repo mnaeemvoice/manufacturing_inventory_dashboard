@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE odoo SYSTEM "odoo.dtd">
+<odoo>
+    <record id="module_category_manufacturing_inventory_dashboard" model="ir.module.category">
+        <field name="name">M&amp;I Dashboard</field>
+        <field name="sequence">20</field>
+    </record>
+
+    <record id="group_dashboard_user" model="res.groups">
+        <field name="name">Dashboard User</field>
+        <field name="category_id" ref="module_category_manufacturing_inventory_dashboard"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+
+    <record id="group_dashboard_manager" model="res.groups">
+        <field name="name">Dashboard Manager</field>
+        <field name="category_id" ref="module_category_manufacturing_inventory_dashboard"/>
+        <field name="implied_ids" eval="[(4, ref('group_dashboard_user'))]"/>
+        <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+    </record>
+</odoo>

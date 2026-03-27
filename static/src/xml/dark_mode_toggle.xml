@@ -1,0 +1,13 @@
+<!DOCTYPE odoo SYSTEM "odoo.dtd">
+<templates id="dark_mode_toggle_template" xml:space="preserve">
+    <t t-name="manufacturing_inventory_dashboard.dark_mode_toggle" owl="1">
+        <button class="o_dark_mode_toggle_btn btn btn-secondary" t-on-click="toggleDarkMode">
+            <t t-if="state.isDarkMode">
+                <i class="fa fa-sun-o"/> Light Mode
+            </t>
+            <t t-else="">
+                <i class="fa fa-moon-o"/> Dark Mode
+            </t>
+        </button>
+    </t>
+</templates>

@@ -1,0 +1,193 @@
+<templates id="template" xml:space="preserve">
+    <t t-name="manufacturing_inventory_dashboard.Dashboard" owl="1">
+        <Layout display="always">
+            <div t-att-class="'o_manufacturing_inventory_dashboard'">
+
+                <!-- Dashboard Header -->
+                <div class="o_dashboard_header">
+                    <img src="/manufacturing_inventory_dashboard/static/src/img/logo.png" class="dashboard-logo"/>
+                    <h1>Manufacturing &amp; Inventory Dashboard</h1>
+                    <p class="dashboard-subtitle">
+                        A powerful real-time analytics dashboard for manufacturing and inventory operations in Odoo 18
+                    </p>
+                    <div class="o_dashboard_filters">
+                        <div class="o_filter_item">
+                            <label for="dateRange">Date Range:</label>
+                            <select id="dateRange"
+                                    class="o_date_range_selection form-control"
+                                    t-model="dashboard.date_range"
+                                    t-on-change="onChangeDateRange">
+                                <t t-foreach="dateRangeOptions || []" t-as="option" t-key="option.value">
+                                    <option t-att-value="option.value" t-esc="option.label"/>
+                                </t>
+                            </select>
+                        </div>
+                        <div class="o_filter_item" t-if="dashboard.date_range === 'custom'">
+                            <label for="startDate">From:</label>
+                            <input type="date" id="startDate" class="o_date_input form-control" t-model="dashboard.date_start" t-on-change="onChangeDateStart"/>
+                        </div>
+                        <div class="o_filter_item" t-if="dashboard.date_range === 'custom'">
+                            <label for="endDate">To:</label>
+                            <input type="date" id="endDate" class="o_date_input form-control" t-model="dashboard.date_end" t-on-change="onChangeDateEnd"/>
+                        </div>
+                        <button class="o_dashboard_refresh_btn btn btn-primary" t-on-click="onRefreshDashboard">
+                            <i class="fa fa-refresh"/> Refresh
+                        </button>
+                        <button class="o_dashboard_clear_filter_btn btn btn-warning" t-on-click="onClearKpiFilter" t-if="dashboard.active_kpi_filter">
+                            <i class="fa fa-times"/> Clear Filter
+                        </button>
+                        <button class="o_dashboard_config_btn btn btn-secondary" t-on-click="onConfigDashboard">
+                            <i class="fa fa-cog"/> Configure
+                        </button>
+                        <DarkModeToggle onThemeChange="onRefreshDashboard"/>
+                    </div>
+                </div>
+
+                <!-- KPIs Section -->
+                <!-- KPIs Section -->
+<div class="o_dashboard_section o_dashboard_kpis">
+
+    <div class="o_kpi_header">
+        <h3>Key Performance Indicators</h3>
+    </div>
+
+    <div class="o_kpi_cards">
+
+        <!-- SAFE LOOP (object → array) -->
+        <t t-if="dashboard.kpis and Object.keys(dashboard.kpis).length">
+
+            <t t-foreach="Object.values(dashboard.kpis)"
+               t-as="kpi"
+               t-key="kpi.technical_name">
+
+                <div class="o_kpi_card_wrapper">
+                    <KpiCard
+                        kpi="kpi"
+                        onClick="onKpiCardClick"
+                        onExport="exportKpiToCsv"/>
+                </div>
+
+            </t>
+
+        </t>
+
+        <!-- Fallback when no KPIs -->
+        <t t-else="">
+            <div class="o_no_kpi text-center">
+                <p>No Key Performance Indicators available</p>
+            </div>
+        </t>
+
+    </div>
+</div>
+
+                <!-- Charts Section -->
+                <div class="o_dashboard_section o_dashboard_charts">
+                    <t t-if="dashboard.charts and Object.keys(dashboard.charts).length > 0">
+                        <t t-foreach="Object.values(dashboard.charts || {})" t-as="chart" t-key="chart.technical_name">
+                            <t t-if="chart and chart.name">
+                                <DashboardChart
+                                    chartData="chart"
+                                    onExport="exportChartToCsv"
+                                    t-on-mounted="component => chartRefs[chart.technical_name] = component"/>
+                            </t>
+                        </t>
+                    </t>
+                    <t t-else="">
+                        <p>No charts available.</p>
+                    </t>
+                </div>
+
+                <!-- Tables Section -->
+                <div class="o_dashboard_section o_dashboard_tables">
+
+                    <!-- Recent Manufacturing Orders -->
+                    <div class="o_dashboard_table_container">
+                        <h3>Recent Manufacturing Orders</h3>
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Reference</th>
+                                        <th>Product</th>
+                                        <th>Quantity</th>
+                                        <th>Status</th>
+                                        <th>Planned Start Date</th>
+                                        <th>Routing</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-if="dashboard.recent_mrp_orders and dashboard.recent_mrp_orders.length > 0">
+                                        <t t-foreach="dashboard.recent_mrp_orders" t-as="order" t-key="order.id">
+                                            <tr t-on-click="() => onTableRowClick('mrp.production', order.id, order.action_id)" class="table-row-link">
+                                                <td><t t-esc="order.name"/></td>
+                                                <td><t t-esc="order.product"/></td>
+                                                <td><t t-esc="order.quantity"/></td>
+                                                <td>
+                                                    <span t-att-class="'badge badge-' +
+                                                        (order.state_raw === 'done' ? 'success' :
+                                                        order.state_raw === 'progress' ? 'primary' :
+                                                        order.state_raw === 'confirmed' ? 'info' :
+                                                        order.state_raw === 'cancel' ? 'danger' :
+                                                        'secondary')" t-esc="order.state"/>
+                                                </td>
+                                                <td><t t-esc="order.date_planned_start"/></td>
+                                                <td><t t-esc="order.route_id || 'N/A'"/></td>
+                                            </tr>
+                                        </t>
+                                    </t>
+                                    <tr t-else="">
+                                        <td colspan="6" class="text-center">No recent manufacturing orders found.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Recent Stock Transfers -->
+                    <div class="o_dashboard_table_container">
+                        <h3>Recent Stock Transfers</h3>
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Reference</th>
+                                        <th>Partner</th>
+                                        <th>Type</th>
+                                        <th>Status</th>
+                                        <th>Scheduled Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-if="dashboard.recent_stock_transfers and dashboard.recent_stock_transfers.length > 0">
+                                        <t t-foreach="dashboard.recent_stock_transfers" t-as="transfer" t-key="transfer.id">
+                                            <tr t-on-click="() => onTableRowClick('stock.picking', transfer.id, transfer.action_id)" class="table-row-link">
+                                                <td><t t-esc="transfer.name"/></td>
+                                                <td><t t-esc="transfer.partner || 'N/A'"/></td>
+                                                <td><t t-esc="transfer.type"/></td>
+                                                <td>
+                                                    <span t-att-class="'badge badge-' +
+                                                        (transfer.state_raw === 'done' ? 'success' :
+                                                        transfer.state_raw === 'assigned' ? 'primary' :
+                                                        transfer.state_raw === 'waiting' ? 'warning' :
+                                                        transfer.state_raw === 'cancel' ? 'danger' :
+                                                        'secondary')" t-esc="transfer.state"/>
+                                                </td>
+                                                <td><t t-esc="transfer.scheduled_date"/></td>
+                                            </tr>
+                                        </t>
+                                    </t>
+                                    <tr t-else="">
+                                        <td colspan="5" class="text-center">No recent stock transfers found.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div> <!-- End Tables Section -->
+
+            </div> <!-- End dashboard wrapper -->
+        </Layout>
+    </t>
+</templates>

@@ -1,0 +1,240 @@
+.o_manufacturing_inventory_dashboard {
+    padding: 16px;
+    background-color: var(--dashboard-background-color, #f0f2f5);
+    
+    color: var(--dashboard-text-color, #333);
+
+    /* ================= HEADER ================= */
+    .o_dashboard_header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        margin-bottom: 25px;
+
+        h1 {
+            margin: 0;
+            color: var(--dashboard-title-color, #343a40);
+        }
+
+        .o_dashboard_filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+
+            .o_filter_item label {
+                margin-right: 5px;
+                color: var(--dashboard-label-color, #555);
+            }
+
+            .o_date_range_selection,
+            .o_date_input {
+                padding: 6px 10px;
+                border: 1px solid var(--dashboard-border-color, #ddd);
+                border-radius: 4px;
+                background-color: var(--dashboard-input-bg, #fff);
+                color: var(--dashboard-input-text-color, #333);
+            }
+
+            .o_dashboard_refresh_btn,
+            .o_dashboard_config_btn,
+            .o_dark_mode_toggle_btn {
+                padding: 6px 12px;
+                border-radius: 4px;
+                border: none;
+                cursor: pointer;
+                background-color: var(--dashboard-button-bg, #007bff);
+                color: var(--dashboard-button-text, #fff);
+
+                &:hover {
+                    opacity: 0.9;
+                }
+            }
+
+            .o_dark_mode_toggle_btn {
+                background-color: var(--dashboard-toggle-bg, #6c757d);
+            }
+        }
+    }
+
+    /* ================= SECTIONS ================= */
+    .o_dashboard_kpis,
+    .o_dashboard_charts,
+    .o_dashboard_tables {
+        display: grid;
+        gap: 20px;
+        margin-bottom: 30px;
+    }
+
+    /* KPIs */
+    .o_dashboard_kpis {
+
+    }
+
+
+    .o_kpi_cards {
+        
+        
+        
+         /* Add some space below the header */
+            display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 20px;
+        margin-top: 20px; /* Add some space below the header */
+    }
+    /* Charts */
+    .o_dashboard_charts {
+        grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+    }
+
+    /* Tables (FIXED ISSUE) */
+    .o_dashboard_tables {
+        grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+    }
+
+    /* ================= CARDS ================= */
+    .o_kpi_card,
+    .o_chart_container,
+    .o_dashboard_table_container {
+        background-color: var(--dashboard-card-bg, #fff);
+        border-radius: 8px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+        padding: 18px;
+        transition: 0.2s;
+    }
+
+    /* KPI CARD */
+    .o_kpi_card {
+        min-height: 120px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        cursor: pointer;
+
+        &:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+        }
+
+        .kpi-header {
+            display: flex;
+            align-items: center;
+
+            .kpi-icon {
+                font-size: 22px;
+                padding: 10px;
+                border-radius: 50%;
+                color: #fff;
+
+                &.bg-primary { background-color: var(--primary-color, #007bff); }
+                &.bg-success { background-color: var(--success-color, #28a745); }
+                &.bg-warning { background-color: var(--warning-color, #ffc107); }
+                &.bg-danger { background-color: var(--danger-color, #dc3545); }
+                &.bg-info { background-color: var(--info-color, #17a2b8); }
+            }
+
+            .kpi-name {
+                font-weight: bold;
+                margin-left: 10px;
+                color: var(--dashboard-card-title-color, #333);
+            }
+        }
+
+        .kpi-value {
+            font-size: 2em;
+            font-weight: bold;
+            color: var(--dashboard-card-value-color, #007bff);
+        }
+
+        .kpi-change.positive { color: var(--success-color, #28a745); }
+        .kpi-change.negative { color: var(--danger-color, #dc3545); }
+    }
+
+    /* ================= TABLES ================= */
+    table {
+        width: 100%;
+        border-collapse: collapse;
+
+        th,
+        td {
+            padding: 9px;
+            border-bottom: 1px solid var(--dashboard-table-border, #eee);
+        }
+
+        th {
+            background-color: var(--dashboard-table-header-bg, #f8f9fa);
+            color: var(--dashboard-table-header-text, #333);
+        }
+
+        tr:hover {
+            background-color: var(--dashboard-table-row-hover, #f1f1f1);
+        }
+
+        .table-row-link {
+            cursor: pointer;
+        }
+
+        .badge {
+            padding: .35em .65em;
+            border-radius: .25rem;
+            font-size: .75em;
+            font-weight: 700;
+            color: #fff;
+
+            &.badge-success { background-color: var(--success-color, #28a745); }
+            &.badge-primary { background-color: var(--primary-color, #007bff); }
+            &.badge-warning { background-color: var(--warning-color, #ffc107); color: #212529; }
+            &.badge-danger { background-color: var(--danger-color, #dc3545); }
+            &.badge-info { background-color: var(--info-color, #17a2b8); }
+            &.badge-secondary { background-color: var(--secondary-color, #6c757d); }
+        }
+    }
+}
+
+.o_manufacturing_inventory_dashboard {
+    height: 100vh;        /* poori screen height */
+    overflow: auto;      /* vertical + horizontal scroll */
+}
+
+/* ================= DARK MODE ================= */
+body.o_dark_mode .o_manufacturing_inventory_dashboard {
+    --dashboard-background-color: #343a40;
+    --dashboard-text-color: #f8f9fa;
+    --dashboard-title-color: #f8f9fa;
+    --dashboard-label-color: #ced4da;
+    --dashboard-input-bg: #495057;
+    --dashboard-input-text-color: #f8f9fa;
+    --dashboard-border-color: #6c757d;
+    --dashboard-button-bg: #007bff;
+    --dashboard-button-text: #fff;
+    --dashboard-toggle-bg: #6c757d;
+    --dashboard-card-bg: #495057;
+    --dashboard-card-title-color: #f8f9fa;
+    --dashboard-card-value-color: #90CAF9;
+    --dashboard-table-border: #6c757d;
+    --dashboard-table-header-bg: #343a40;
+    --dashboard-table-header-text: #f8f9fa;
+    --dashboard-table-row-hover: #6c757d;
+}
+
+/* ================= CHART EXPORT BUTTON ================= */
+.o_manufacturing_inventory_dashboard .chart-export-btn {
+    background-color: #4CAF50;   /* Hara button */
+    color: white;                 /* Icon/text color */
+    border: none;                 /* Border remove */
+    padding: 6px 10px;            /* Thoda chhota size */
+    font-size: 14px;              /* Icon thoda chhota */
+    border-radius: 5px;           /* Rounded corners */
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;  /* Smooth hover effect */
+}
+
+.o_manufacturing_inventory_dashboard .chart-export-btn:hover {
+    background-color: #45a049;   /* Darker green on hover */
+    transform: scale(1.05);       /* Thoda zoom effect */
+}
+
+.o_manufacturing_inventory_dashboard .chart-export-btn i {
+    margin-right: 3px;           /* Icon spacing */
+}

@@ -1,0 +1,159 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data noupdate="1">
+        <record id="kpi_total_mo_count" model="dashboard.kpi">
+            <field name="name">Total Manufacturing Orders</field>
+            <field name="technical_name">total_mo_count</field>
+            <field name="model_id" ref="base.model_mrp_production" />
+            <field name="calculation_method">count</field>
+            <field name="icon">fa fa-cogs</field>
+            <field name="color">bg-primary</field>
+            <field name="drill_down_action_id" ref="mrp.mrp_production_action" />
+            <field name="drill_down_domain">[]</field>
+        </record>
+        <record id="kpi_mrp_in_progress" model="dashboard.kpi">
+            <field name="name">MO In Progress</field>
+            <field name="technical_name">mo_in_progress</field>
+            <field name="model_id" ref="base.model_mrp_production" />
+            <field name="calculation_method">count</field>
+            <field name="domain_json">[('state', '=', 'progress')]</field>
+            <field name="icon">fa fa-spinner</field>
+            <field name="color">bg-warning</field>
+            <field name="drill_down_action_id" ref="mrp.mrp_production_action" />
+            <field name="drill_down_domain">[('state', '=', 'progress')]</field>
+        </record>
+        <record id="kpi_mrp_to_do" model="dashboard.kpi">
+            <field name="name">MO To Do</field>
+            <field name="technical_name">mo_to_do</field>
+            <field name="model_id" ref="base.model_mrp_production" />
+            <field name="calculation_method">count</field>
+            <field name="domain_json">[('state', '=', 'confirmed')]</field>
+            <field name="icon">fa fa-list-ul</field>
+            <field name="color">bg-info</field>
+            <field name="drill_down_action_id" ref="mrp.mrp_production_action" />
+            <field name="drill_down_domain">[('state', '=', 'confirmed')]</field>
+        </record>
+        <record id="kpi_mrp_completion_rate" model="dashboard.kpi">
+            <field name="name">MO Completion Rate (%)</field>
+            <field name="technical_name">mrp_completion_rate</field>
+            <field name="model_id" ref="base.model_mrp_production" />
+            <field name="calculation_method">custom</field>
+            <field name="custom_method_name">_get_mrp_completion_rate</field>
+            <field name="icon">fa fa-check-circle</field>
+            <field name="color">bg-success</field>
+            <field name="drill_down_action_id" ref="mrp.mrp_production_action" />
+            <field name="drill_down_domain">[('state', '=', 'done')]</field>
+        </record>
+        <record id="kpi_outgoing_transfers" model="dashboard.kpi">
+            <field name="name">Outgoing Stock Transfers</field>
+            <field name="technical_name">outgoing_transfers</field>
+            <field name="model_id" ref="base.model_stock_picking" />
+            <field name="calculation_method">count</field>
+            <field name="domain_json">[('picking_type_code', '=', 'outgoing'), ('state', '!=', 'cancel')]</field>
+            <field name="icon">fa fa-truck</field>
+            <field name="color">bg-primary</field>
+            <field name="drill_down_action_id" ref="stock.action_picking_tree_all" />
+            <field name="drill_down_domain">[('picking_type_code', '=', 'outgoing')]</field>
+        </record>
+        <record id="kpi_incoming_transfers" model="dashboard.kpi">
+            <field name="name">Incoming Stock Transfers</field>
+            <field name="technical_name">incoming_transfers</field>
+            <field name="model_id" ref="base.model_stock_picking" />
+            <field name="calculation_method">count</field>
+            <field name="domain_json">[('picking_type_code', '=', 'incoming'), ('state', '!=', 'cancel')]</field>
+            <field name="icon">fa fa-download</field>
+            <field name="color">bg-primary</field>
+            <field name="drill_down_action_id" ref="stock.action_picking_tree_all" />
+            <field name="drill_down_domain">[('picking_type_code', '=', 'incoming')]</field>
+        </record>
+        <record id="action_total_stock_value_quants" model="ir.actions.act_window">
+            <field name="name">Total Stock Value Quants</field>
+            <field name="res_model">stock.quant</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('location_id.usage', '=', 'internal')]</field>
+            <field name="context">{}</field>
+        </record>
+        <record id="kpi_total_stock_value" model="dashboard.kpi">
+            <field name="name">Total Stock Value</field>
+            <field name="technical_name">total_stock_value</field>
+            <field name="model_id" ref="stock.model_stock_quant" />
+            <field name="calculation_method">custom</field>
+            <field name="custom_method_name">_get_stock_valuation</field>
+            <field name="icon">fa fa-money</field>
+            <field name="color">bg-success</field>
+            <field name="drill_down_action_id" ref="manufacturing_inventory_dashboard.action_total_stock_value_quants" />
+            <field name="drill_down_domain">[('location_id.usage', '=', 'internal')]</field>
+        </record>
+        <record id="chart_mo_status_pie" model="dashboard.chart">
+            <field name="name">Manufacturing Orders by Status</field>
+            <field name="technical_name">mo_status_pie</field>
+            <field name="chart_type">pie</field>
+            <field name="model_id" ref="base.model_mrp_production" />
+            <field name="custom_chart_method">_get_mo_status_pie_data</field>
+            <field name="chart_options">{
+                "responsive": true,
+                "plugins": {
+                    "legend": {"position": "top"},
+                    "title": {"display": true, "text": "Manufacturing Orders by Status"}
+                }
+            }</field>
+        </record>
+        <record id="chart_stock_transfers_by_type_doughnut" model="dashboard.chart">
+            <field name="name">Stock Transfers by Type</field>
+            <field name="technical_name">stock_transfers_by_type_doughnut</field>
+            <field name="chart_type">doughnut</field>
+            <field name="model_id" ref="stock.model_stock_picking" />
+            <field name="custom_chart_method">_get_stock_picking_type_doughnut_data</field>
+            <field name="chart_options">{
+                "responsive": true,
+                "plugins": {
+                    "legend": {"position": "top"},
+                    "title": {"display": true, "text": "Stock Transfers by Type"}
+                }
+            }</field>
+        </record>
+        <record id="chart_product_wise_stock_line" model="dashboard.chart">
+            <field name="name">Product-wise Stock Movements (Qty)</field>
+            <field name="technical_name">product_wise_stock_line</field>
+            <field name="chart_type">line</field>
+            <field name="model_id" ref="stock.model_stock_move" />
+            <field name="custom_chart_method">_get_product_wise_stock_line_data</field>
+            <field name="chart_options">{
+                "responsive": true,
+                "plugins": {
+                    "legend": {"position": "top"},
+                    "title": {"display": true, "text": "Product-wise Stock Movements"}
+                },
+                "scales": {
+                    "y": {"beginAtZero": true}
+                }
+            }</field>
+        </record>
+        <record id="chart_mrp_product_qty_bar" model="dashboard.chart">
+            <field name="name">Manufacturing Order Quantity by Product</field>
+            <field name="technical_name">mrp_product_qty_bar</field>
+            <field name="chart_type">bar</field>
+            <field name="model_id" ref="mrp.model_mrp_production" />
+            <field name="group_by_field">product_id</field>
+            <field name="aggregate_method">sum_field</field>
+            <field name="field_to_aggregate">product_qty</field>
+            <field name="domain_json">[]</field>
+            <field name="chart_options">{
+                "responsive": true,
+                "plugins": {
+                    "legend": {"position": "top"},
+                    "title": {"display": true, "text": "MO Quantity by Product"}
+                },
+                "scales": {
+                    "y": {"beginAtZero": true}
+                }
+            }</field>
+        </record>
+        <record id="action_manufacturing_inventory_dashboard" model="ir.actions.client">
+            <field name="name">Manufacturing &amp; Inventory Dashboard</field>
+            <field name="tag">manufacturing_inventory_dashboard.dashboard</field>
+        </record>
+        <menuitem id="menu_manufacturing_inventory_dashboard_root" name="M&amp;I Dashboard" sequence="10" web_icon="manufacturing_inventory_dashboard,static/description/icon.png" action="action_manufacturing_inventory_dashboard" />
+        <menuitem id="menu_manufacturing_inventory_dashboard_main" name="Manufacturing &amp; Inventory Dashboard" parent="menu_manufacturing_inventory_dashboard_root" sequence="1" action="action_manufacturing_inventory_dashboard" />
+    </data>
+</odoo>
