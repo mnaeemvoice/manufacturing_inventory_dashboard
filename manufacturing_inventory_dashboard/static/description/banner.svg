@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 640">
+  <defs>
+    <linearGradient id="bannerGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#714B67;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#8F6B9E;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#A67BC5;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="1920" height="640" fill="url(#bannerGrad)"/>
+  
+  <!-- Dashboard mockup -->
+  <g transform="translate(200, 100)">
+    <rect x="0" y="0" width="600" height="440" rx="12" fill="white" opacity="0.95"/>
+    <rect x="20" y="20" width="560" height="40" rx="6" fill="#714B67" opacity="0.2"/>
+    <text x="40" y="45" font-family="Arial, sans-serif" font-size="16" fill="#714B67" font-weight="bold">Manufacturing Dashboard</text>
+    
+    <!-- KPI Cards -->
+    <rect x="20" y="80" width="130" height="80" rx="6" fill="#714B67" opacity="0.1"/>
+    <rect x="170" y="80" width="130" height="80" rx="6" fill="#8F6B9E" opacity="0.1"/>
+    <rect x="320" y="80" width="130" height="80" rx="6" fill="#A67BC5" opacity="0.1"/>
+    <rect x="470" y="80" width="130" height="80" rx="6" fill="#714B67" opacity="0.1"/>
+    
+    <!-- Chart area -->
+    <rect x="20" y="180" width="280" height="240" rx="6" fill="white" stroke="#714B67" stroke-width="2"/>
+    <rect x="320" y="180" width="280" height="240" rx="6" fill="white" stroke="#8F6B9E" stroke-width="2"/>
+    
+    <!-- Chart lines -->
+    <polyline points="40,380 80,340 120,360 160,300 200,320 240,280 280,300" fill="none" stroke="#714B67" stroke-width="3"/>
+    <circle cx="40" cy="380" r="4" fill="#714B67"/>
+    <circle cx="80" cy="340" r="4" fill="#714B67"/>
+    <circle cx="120" cy="360" r="4" fill="#714B67"/>
+    <circle cx="160" cy="300" r="4" fill="#714B67"/>
+    <circle cx="200" cy="320" r="4" fill="#714B67"/>
+    <circle cx="240" cy="280" r="4" fill="#714B67"/>
+    <circle cx="280" cy="300" r="4" fill="#714B67"/>
+    
+    <!-- Pie chart -->
+    <circle cx="460" cy="300" r="60" fill="#714B67" opacity="0.3"/>
+    <path d="M460 300 L460 240 A60 60 0 0 1 520 300 Z" fill="#8F6B9E"/>
+    <path d="M460 300 L520 300 A60 60 0 0 1 460 360 Z" fill="#A67BC5"/>
+  </g>
+  
+  <!-- Text -->
+  <text x="900" y="200" font-family="Arial, sans-serif" font-size="48" fill="white" font-weight="bold">Manufacturing &amp;</text>
+  <text x="900" y="260" font-family="Arial, sans-serif" font-size="48" fill="white" font-weight="bold">Inventory Dashboard</text>
+  <text x="900" y="320" font-family="Arial, sans-serif" font-size="24" fill="white" opacity="0.9">Real-time KPIs • Interactive Charts • Data Export</text>
+  <text x="900" y="360" font-family="Arial, sans-serif" font-size="20" fill="white" opacity="0.8">Transform your manufacturing data into actionable insights</text>
+  
+  <!-- Author info -->
+  <text x="900" y="450" font-family="Arial, sans-serif" font-size="18" fill="white" opacity="0.7">Author: Muhammad Naeem</text>
+  <text x="900" y="480" font-family="Arial, sans-serif" font-size="18" fill="white" opacity="0.7">Price: $100.00</text>
+</svg>
