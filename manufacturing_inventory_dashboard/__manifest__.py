@@ -33,7 +33,7 @@
         - User-friendly interface with customizable views
     """,
     'author': 'Muhammad Naeem',
-    'website': 'https://www.odoo.com/apps/modules/16.0/manufacturing_inventory_dashboard/',
+    'website': 'https://getodooai.com/',
     'price': '100.00',
     'depends': ['mail', 'mrp', 'stock', 'base', 'web'],
     'data': [
