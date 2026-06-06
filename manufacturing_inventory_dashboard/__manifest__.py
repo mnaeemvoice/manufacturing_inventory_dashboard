@@ -16,8 +16,25 @@
         - CSV export for charts and tables.
         - Per-user customization for dashboard layout.
         - Live data tables for recent manufacturing orders and stock transfers.
+        
+        Dashboard Overview:
+        - Real-time KPI cards showing manufacturing order status, production efficiency, and inventory levels
+        - Interactive charts for production trends, stock movements, and order analysis
+        - Recent manufacturing orders table with quick access to order details
+        - Recent stock transfers table with transfer status tracking
+        - Customizable date range filters for flexible data analysis
+        - Dark/Light mode theme toggle for better visibility
+        
+        Benefits:
+        - Improve decision-making with real-time data visualization
+        - Track manufacturing performance and inventory metrics at a glance
+        - Identify trends and patterns in production and stock movements
+        - Export data for further analysis and reporting
+        - User-friendly interface with customizable views
     """,
-    'website': 'https://www.odoo.com/app/manufacturing-inventory-dashboard',
+    'author': 'Muhammad Naeem',
+    'website': 'https://www.odoo.com/apps/modules/16.0/manufacturing_inventory_dashboard/',
+    'price': '100.00',
     'depends': ['mail', 'mrp', 'stock', 'base', 'web'],
     'data': [
         # Security first
@@ -76,4 +93,6 @@
     'application': True,
     'auto_install': False,
     'license': 'LGPL-3',
+    'images': ['static/description/banner.png'],
+    'post_init_hook': 'post_init_hook',
 }
